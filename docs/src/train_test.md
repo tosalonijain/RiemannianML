@@ -9,16 +9,16 @@ It imports the required machine learning models from scikit-learn python using P
 
 | Function   | Description |
 |:---------- |:----------- |
-| [_transform_ts](@ref) | internal function that projects the points in the SPD manifold into the tangent space|
+| [logMap](@ref) | internal function that projects the points in the SPD manifold into the tangent space|
 | [`fit!`](@ref) | fits the model for the given training set|
 | [`predict`](@ref) | makes prediction for the points in the test set|
 | [`cross_val_score`](@ref) | evaluates the cross-validation score of the estimator or model|
 
 
-## _transform_ts
+## logMap
 
 ```@docs
-_transform_ts
+logMap
 ```
 
 ## fit!

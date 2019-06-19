@@ -13,12 +13,12 @@ makedocs(
       "SVM.md",
       "train_test.md",
       "mdm.md",
-      "cross_mdm.md",
-      "example.md"
+      "example.md",
+      "tutorial.md"
 
    ]
 )
 
 deploydocs(
-    repo = "https://github.com/tosalonijain/riemannianML.git"
+    repo = "https://github.com/tosalonijain/RiemannianML.git"
 )

@@ -1,13 +1,12 @@
 # functions imported from ScikitLearn.jl
 #@sk_import neighbors: KNeighborsClassifier
-
+@sk_import neighbors: KNeighborsClassifier
 """
-Structure for implementing KNeighborsClassifier, with all the arguments as attributes to
-this structure. The *'clf'* attribute is the python object of KNeighborsClassifier that is
+Structure for implementing KNeighborsClassifier. The `clf` attribute is the python object of KNeighborsClassifier that is
 constructed by the constructor function of this structure as soon as a kneighborClf
 instance is created by the user.
 
-The available specifications for creating a model of kneighborClf are :
+Parameters :
 
 - n_neighbors :: Int64
 - weights:: String
@@ -18,9 +17,7 @@ The available specifications for creating a model of kneighborClf are :
 - metric_params :: Dict
 - n_jobs :: Int
 
-One should refer to the ScikitLearn documentation of KNeighborsClassifier whose link
-is provided above for the better understanding of these parameters with respect
-to KNeighbors Classification.
+One may refer to the ScikitLearn documentation of KNeighborsClassifier for the better understanding of these parameters with respect to kneighborClf.
 
     ## Example
     using RiemannianML

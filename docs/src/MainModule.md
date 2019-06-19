@@ -8,9 +8,7 @@ It uses the following standard Julia packages:
 |:----------:|
 | [LinearAlgebra](https://bit.ly/2W5Wq8W) |
 | [Statistics](https://bit.ly/2Oem3li) |
-| [PostDefManifold](https://github.com/Marco-Congedo/PosDefManifold.jl)|
 | [ScikitLearn](https://github.com/cstjean/ScikitLearn.jl)|
-| ScikitLearn.CrossValidation|
 | [Random](https://github.com/JuliaStdlibs/Random.jl)|
 
 

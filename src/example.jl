@@ -1,4 +1,3 @@
-
 @sk_import linear_model: LogisticRegression
 @sk_import linear_model: LogisticRegressionCV
 @sk_import neighbors: KNeighborsClassifier
@@ -54,7 +53,7 @@ Y = [repeat([1], k1); repeat([2],k2)]
 model1 = kneighborClf(n_neighbors=3)
 
 # Model instance for LogisticReg that applies LogisticRegression.
-model2 = LogisticReg()
+model2 = LogisticReg(solver = "lbfgs")
 
 # Model instance for LinearSVM that applies LinearSVC.
 model3 = LinearSVM()
@@ -67,13 +66,43 @@ model5 = MDM(Fisher)
 
 # Model instance for LogisticRegCV that applies LogisticRegressionCV
 # (CV - cross-validation).
-model6 = LogisticRegCV()
+model6 = LogisticRegCV(solver = "lbfgs")
+
+
+
+using NPZ
+
+path = "/home/saloni/RiemannianML/src/" # where files are stored
+filename = "subject_1.npz" # for subject number i
+data = npzread(path*filename)
+X = data["data"] # retrive the epochs
+y = data["labels"] # retrive the corresponding labels
+sam_size = size(X,1)
+𝐗 = ℍVector(undef, sam_size)
+@threads for i = 1:sam_size
+    𝐗[i] = gram(X[i,:,:])
+end
+println(dim(𝐗))
+fit!(model5, 𝐗,y)
+println(predict(model5,𝐗))
+println(y)
+println(cross_val_score(model5,𝐗,y, cv = 2))
+
+
+gm = 0.02
+P2=[geodesic(Fisher, P[i], A1, gm) for i=1:k1]
+Q2=[geodesic(Fisher, P[i], A2, gm) for i=k1+1:k1+k2 ]
+𝐗=ℍVector([P2; Q2])
+cv_fold = 4
+
 
 # The so created simulated training sets are then fit to the models. This is done
 # simply by calling the fit! function that takes 3 arguments, model, training set
 # and labels. fit! is the first function i.e. to be called so that our model is
 # ready to make predictions.
-fit!(model1, 𝐗,Y)
+fit!(model1, 𝐗,y)
+
+#=
 fit!(model2, 𝐗,Y)
 fit!(model5, 𝐗,Y)
 fit!(model3, 𝐗,Y)
@@ -102,7 +131,7 @@ samp = ℍVector([T1; S1])
 # Calling the predict function on the testing sample samp with different fit models.
 predict(model2, samp)
 predict(model5, samp)
-
+=#
 
 
 # A table is constructed that holds the cross-validation score for each of

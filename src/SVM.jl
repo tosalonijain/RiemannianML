@@ -1,14 +1,15 @@
 #function mean(metric::Metric, 𝐏::ℍVector;
             #w::Vector=[], ✓w=true, ⏩=false)
-#@sk_import svm: LinearSVC
-#@sk_import svm: SVC
+
+@sk_import svm: LinearSVC
+@sk_import svm: SVC
 """
 Structure for implementing LinearSVC, with all the arguments as attributes to
 this structure. The *'clf'* attribute is the python object of LinearSVC that is
 constructed by the constructor function of this structure as soon as a LinearSVM
 instance is created by the user.
 
-The available specifications for creating a model of LinearSVM are :
+Parameters :
 
 - penalty:: String
 - loss :: String
@@ -23,8 +24,7 @@ The available specifications for creating a model of LinearSVM are :
 - random_state :: Int
 - max_iter :: Int64
 
-One should refer to the ScikitLearn documentation of LinearSVC whose link
-is provided above for the better understanding of these parameters with respect
+One should refer to the ScikitLearn documentation of LinearSVC for the better understanding of these parameters with respect
 to Linear Support Vector Machine.
 
     ## Example
@@ -63,7 +63,7 @@ this structure. The *'clf'* attribute is the python object of SVC that is
 constructed by the constructor function of this structure as soon as a SVM
 instance is created by the user.
 
-The available specifications for creating a model of SVM are :
+Parameters :
 
 - penalty:: String
 - loss :: String
@@ -78,8 +78,7 @@ The available specifications for creating a model of SVM are :
 - random_state :: Int
 - max_iter :: Int64
 
-One should refer to the ScikitLearn documentation of SVC whose link
-is provided above for the better understanding of these parameters with respect
+One should refer to the ScikitLearn documentation of SVC for the better understanding of these parameters with respect
 to Support Vector Machine.
 
     ## Example

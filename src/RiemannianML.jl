@@ -39,7 +39,9 @@ BLAS.set_num_threads(Sys.CPU_THREADS-Threads.nthreads())
 import
     ScikitLearn.fit!,
     ScikitLearn.CrossValidation.cross_val_score,
-    ScikitLearn.predict
+    ScikitLearn.CrossValidation.cross_val_predict,
+    ScikitLearn.predict,
+    PosDefManifold.logMap
 
 export
     # From this module
@@ -61,26 +63,29 @@ export
     find_dist,
     predict_mdm,
     predict_prob,
-
-    #From cross_mdm.jl
     indCV,
     cross_val_mdm,
 
     # From Train_test.jl
+    logMap,
     fit!,
     testing,
     training,
     cross_val_score,
-    predict
+    predict,
+
+    # From check.jl
+    find_distt
 
 
 include("knn.jl")
 include("logisticRegression.jl")
 include("SVM.jl")
 include("mdm.jl")
-include("cross_mdm.jl")
 include("train_test.jl")
+include("check.jl")
 include("example.jl")
+
 println("\n⭐ "," Welcome to the RiemannianML package", " ⭐\n")
 @info(" ")
 println(" Your Machine ",gethostname()," (",Sys.MACHINE, ")")

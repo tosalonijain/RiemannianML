@@ -1,14 +1,15 @@
 # Classes imported from ScikitLearn python version.
 #@sk_import linear_model: LogisticRegression
 #@sk_import linear_model: LogisticRegressionCV
-
+@sk_import linear_model: LogisticRegression
+@sk_import linear_model: LogisticRegressionCV
 """
 Structure for implementing LogisticRegression, with all the arguments as attributes to
 this structure. The *'clf'* attribute is the python object of LogisticRegression that is
 constructed by the constructor function of this structure as soon as a LogisticReg
 instance is created by the user.
 
-The available specifications for creating a model of LogisticReg are :
+Parameters :
 
 - penalty:: String
 - dual :: Bool
@@ -26,8 +27,7 @@ The available specifications for creating a model of LogisticReg are :
 - n_jobs :: Int
 - l1_ratio :: Float64
 
-One should refer to the ScikitLearn documentation of LogisticRegression whose link
-is provided above for the better understanding of these parameters with respect
+One may refer to the ScikitLearn documentation of LogisticRegression for the better understanding of these parameters with respect
 to LogisticRegression.
 
     ## Example
@@ -69,7 +69,7 @@ this structure. The *'clf'* attribute is the python object of LogisticRegression
 constructed by the constructor function of this structure as soon as a LogisticRegCV
 instance is created by the user.
 
-The available specifications for creating a model of LogisticRegCV are :
+Parameters :
 
 - Cs :: Int[] or Float64[]
 - fit_intercept :: Bool
@@ -89,8 +89,7 @@ The available specifications for creating a model of LogisticRegCV are :
 - random_state :: Int
 - l1_ratios :: Float64
 
-One should refer to the ScikitLearn documentation of LogisticRegressionCV whose link
-is provided above for the better understanding of these parameters with respect
+One should refer to the ScikitLearn documentation of LogisticRegressionCV for the better understanding of these parameters with respect
 to LogisticRegressionCV.
 
     ## Example

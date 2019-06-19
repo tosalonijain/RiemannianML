@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Tutorial · RiemannianML</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.png" alt="RiemannianML logo"/></a><h1>RiemannianML</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../">RiemannianML Documentation</a></li><li><a class="toctext" href="../MainModule/">MainModule (RiemannianML.jl)</a></li><li><a class="toctext" href="../knn/">knn.jl</a></li><li><a class="toctext" href="../logisticRegression/">logisticRegression.jl</a></li><li><a class="toctext" href="../SVM/">SVM.jl</a></li><li><a class="toctext" href="../train_test/">train_test.jl</a></li><li><a class="toctext" href="../mdm/">mdm.jl</a></li><li><a class="toctext" href="../example/">example.jl</a></li><li class="current"><a class="toctext" href>Tutorial</a><ul class="internal"><li><a class="toctext" href="#Classification-in-RiemannianML-1">Classification in RiemannianML</a></li><li><a class="toctext" href="#Example(-continuing-from-above)-1">Example( continuing from above)</a></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Tutorial</a></li></ul><a class="edit-page" href="https://github.com/tosalonijain/RiemannianML/blob/master/docs/src/tutorial.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Tutorial</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Tutorial-1" href="#Tutorial-1">Tutorial</a></h1><p>This is a tutorial guide for RiemannianML module. <strong>If you hold previous experience in working with ScikitLearn in Python, you may skip this tutorial.</strong> For rest, you may have a look. </p><h2><a class="nav-anchor" id="Classification-in-RiemannianML-1" href="#Classification-in-RiemannianML-1">Classification in RiemannianML</a></h2><p>We begin with deciding the model for our data. Currently this package serves 5 models/classifiers:</p><ul><li>K Nearest Neighbor</li><li>Logistic Regression </li><li>Logistic Regression with Cross-Validation</li><li>Linear SVC( Support Vector Classification)</li><li>SVC( Support Vector Classification)</li><li>MDM( Minimum Distance to Mean) in Positive Definite Manifold</li></ul><h3><a class="nav-anchor" id="Creating-Models-1" href="#Creating-Models-1">Creating Models</a></h3><p>The user has to create an object/instance for the classifier class(here structure). The user can create an instance by specifying all the available arguments. Since, this module sets a uniform interface between ScikitLearn python,all the arguments are accepted in ScikitLearn python for all the classifiers except MDM are are accepted here also.</p><pre><code class="language-none"># Model instance for kneighborClf that does KNeighborsClassifier classification.
+model1 = kneighborClf(n_neighbors=3)
+
+# Model instance for LogisticReg that applies LogisticRegression.
+model2 = LogisticReg(solver = &quot;liblinear&quot;, max_iter = 4000)
+
+# Model instance for LinearSVM that applies LinearSVC.
+model3 = LinearSVM()
+
+# Model instance for SVM that applies SVC.
+model4 = SVM()
+
+# Model instance for MDM( Minimum Distance to Mean ) that applies mdm classification.
+model5 = MDM(Fisher)
+
+# Model instance for LogisticRegCV that applies LogisticRegressionCV
+# (CV - cross-validation).
+model6 = LogisticRegCV(solver = &quot;liblinear&quot;, max_iter = 4000, cv = 5)</code></pre><h3><a class="nav-anchor" id="Loading-the-data-1" href="#Loading-the-data-1">Loading the data</a></h3><p>After a classifier instance is created we need to fit the classifier model with the data. For this we first need to load the data in our code. Say my data is stored in npz format(.npz) in my local computer at the following address.</p><pre><code class="language-none">using NPZ
+
+path = &quot;/home/saloni/RiemannianML/src/&quot; # where files are stored
+filename = &quot;subject_1.npz&quot; # for subject number i
+data = npzread(path*filename)
+X = data[&quot;data&quot;] # retrive the epochs
+y = data[&quot;labels&quot;] # retrive the corresponding labels</code></pre><h3><a class="nav-anchor" id="Making-the-data-ready-for-use-1" href="#Making-the-data-ready-for-use-1">Making the data ready for use</a></h3><p>This corresponds to the training part. The training data should be in the form of :</p><ul><li><code>𝐗</code> :-  Vector of Hermitian Matrices. These Hermitian Matrices are the covariance matrices formed   		    out of the raw data. The raw data of signals first need to be converted into their 		   corresponding covariance matrices. This can be very easily done using the <a href="https://marco-congedo.github.io/PosDefManifold.jl/latest/signalProcessing/#PosDefManifold.gram">gram</a> function of 		    <strong>PosDefManifold</strong>. This is what is done in the below code.     </li><li><code>y</code> :-  Labels corresponding to each training sample. Labels should be integers from 1 to n, where  		   n is the number of classes.</li></ul><pre><code class="language-none">train_size = size(X,1)
+𝐗 = ℍVector(undef, sam_size)
+@threads for i = 1:train_size
+	 	𝐗[i] = gram(X[i,:,:])
+end</code></pre><h3><a class="nav-anchor" id="Fitting-your-data-to-the-model-1" href="#Fitting-your-data-to-the-model-1">Fitting your data to the model</a></h3><p>Once you are ready with your data, you are all set to train your model. This is done easily using the <code>fit!</code> function.</p><pre><code class="language-none">fit!(model1,𝐗 ,y)
+fit!(model2,𝐗 ,y)</code></pre><h3><a class="nav-anchor" id="Making-predictions-1" href="#Making-predictions-1">Making predictions</a></h3><p>We say now that the model has been trained, it can be used to make predictions for the test cases. This is again done using a simple function, <code>predict</code>. Say we have the test cases stored the same way as the training data. We load it the same way and apply the same gram function to convert them into covariance matrices. Now we again have a vector of Hermitian Matrices as our <strong>testing set 𝐓.</strong> We predict the class for each sample in the testing set. <em>We can only give a trained model as input</em>.</p><pre><code class="language-none">predict(model1,𝐓)
+predict(model2,𝐓)</code></pre><h3><a class="nav-anchor" id="Evaluating-the-models-1" href="#Evaluating-the-models-1">Evaluating the models</a></h3><p>Last but not the least, we can check the performance of our model by cross-validation. For models imported from ScikitLearn.jl we can simply calculate the score also using the <code>score!</code> function.</p><pre><code class="language-none">score!(model1.clf, 𝐗 ,y)</code></pre><p>But its always better to evaluate a model&#39;s performance by cross-validation and not simply calculating the score. So, we make use of <code>cross_val_score</code>. We directly feed the model into it without even training it before. This function returns The list containing the score for each cross-validation iteration. The number of iteration can be managed using the <code>cv</code> argument.</p><pre><code class="language-none">println(cross_val_score(model1,𝐗,Y, cv = 5))
+
+# Prints the average of all the cross-validation scores
+println(𝚺(cross_val_score(model2,𝐗,Y, cv = 5))/ cv)
+
+# Special arguments available only for mdm model types
+println(cross_val_score(model5,𝐗,Y, cv = 5, cnfmat = true))</code></pre><h2><a class="nav-anchor" id="Example(-continuing-from-above)-1" href="#Example(-continuing-from-above)-1">Example( continuing from above)</a></h2><pre><code class="language-none">model = [model1, model2, model3, model4, model5, model6]
+cv_fold = 4
+table = Array{Float64, 2}(undef, 6, cv_fold)
+for i = 1:6
+		table[i,:] = (cross_val_score(model[i],𝐗,y, cv = cv_fold))
+end
+println([𝚺(table[i,:])/cv_fold for i = 1:6])
+
+
+&gt;&gt;&gt; [0.493056, 0.673611, 0.701389, 0.5, 0.708333, 0.715278]</code></pre><footer><hr/><a class="previous" href="../example/"><span class="direction">Previous</span><span class="title">example.jl</span></a></footer></article></body></html>

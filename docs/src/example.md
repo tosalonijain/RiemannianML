@@ -124,7 +124,7 @@ Calling the predict function on the testing sample samp with different fit model
 	predict(model5, samp)
 
 
-## Table representing performance score for all the models.
+## Table representing performance score for all the models with simulated data.
 
 A table is constructed that holds the cross-validation score for each of the models corresponding to different training sets. These different training sets are simulated training sets for an increasing value of gm i.e. extent of shifting. For this all the models are put in the list model. The following for loop fills values into this table. The table is printed.
 
@@ -163,24 +163,37 @@ Where as for a value of **gm = 0.015 * [1:9]**, we get the following set of valu
 | **Model\gm** | 0.015| 0.030| 0.045| 0.060| 0.075| 0.900| 0.105| 0.120| 0.135|
 |:---- |:---- |:---- |:---- |:---- |:---- |:---- |:---- |:---- |:---- |
 | **kneighbor** | 0.49375| 0.4875| 0.49375| 0.5125| 0.5125| 0.53125| 0.5375| 0.575| 0.625| 
-| **LogisticReg** | 0.54375| 0.7| 0.83125| 0.93125| 0.98125| 0.99375| 0.99375| 0.99375| 0.99375| 
+| **LogisticReg(lasso)** | 0.54375| 0.7| 0.83125| 0.93125| 0.98125| 0.99375| 0.99375| 0.99375| 0.99375| 
 | **LinearSVM** | 0.89375| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 
 | **SVM** | 0.53125| 0.53125| 0.55625| 0.56875| 0.59375| 0.61875| 0.6625| 0.68125| 0.71875| 
 | **MDM** | 0.49375| 0.53125| 0.5375| 0.5875| 0.6625| 0.65625| 0.63125| 0.65625| 0.6875| 
-| **LogisticRegCV** | 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0|
+| **LogisticRegCV(lasso)** | 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0|
 
 
-For a value of **gm = 0.05 * [1:9]**, we get the following set of values. Values are tabulated.
+## Table representing performance score for all the models with real data.
 
+**For real data taken from BNCI2014001 :**
 
-| **Model\gm** | 0.05| 0.10| 0.15| 0.20| 0.25| 0.30| 0.35| 0.40| 0.45|
-|:---- |:---- |:---- |:---- |:---- |:---- |:---- |:---- |:---- |:---- |
-| **kneighbor** |0.49375| 0.5375| 0.65 |0.80625| 0.91875| 0.9875| 1.0| 1.0| 1.0|
-| **LogisticReg** |0.86875| 0.99375| 0.99375| 1.0| 1.0| 1.0| 1.0| 1.0| 1.0| 
-| **LinearSVM** |1.0 |1.0 |1.0 |1.0| 1.0| 1.0| 1.0| 1.0| 1.0|
-| **SVM** | 0.5625 |0.65625 |0.79375 |0.96875 |0.99375 |1.0 |1.0 |1.0 |1.0| 
-| **MDM** | 0.5875 |0.64375 |0.81875 |0.9875 |0.99375| 1.0| 1.0| 1.0 |1.0|
-| **LogisticRegCV** | 1.0| 1.0| 1.0| 1.0| 0.99375| 1.0| 1.0| 1.0| 1.0|
+The dataset contains the recording of 9 sujbects during two different sessions.
+Each is stored in a different file and has a different subject number.
+- 1 = subject 1, session 1
+- 2 = subject 1, session 2
+- 
+- 
+- 
+- 17 = subject 9, session 1
+- 18 = subject 9, session 2
 
+We get the following results. Tabulation is done for few subjects only.
 
+| **Model\gm** | **kneighbor**| **LogisticReg(lasso)**| **LinearSVM**|**SVM**| **MDM** | **LogisticRegCV(lasso)** |
+|:---- |:---- |:---- |:---- |:---- |:---- |:---- |
+|**subject_1** |0.770833| 0.930556| 0.861111| 0.798611| 0.861111| 0.909722|
+| **subject_2** |0.819444| 0.902778| 0.895833| 0.861111| 0.888889| 0.909722| 
+|**subject_3** |0.451389| 0.645833|0.645833| 0.590278| 0.611111| 0.618056|
+|**subject_4**  | 0.583333| 0.618056| 0.666667| 0.513889| 0.541667| 0.638889|
+|**subject_15**| 0.930556| 0.972222| 0.965278| 0.930556| 0.951389| 0.965278|
+|**subject_16** | 0.930556| 0.972222| 0.965278| 0.958333| 0.965278| 0.958333|
+|**subject_17** |0.784722| 0.840278| 0.8125| 0.722222| 0.791667| 0.826389|
+| **subject_18** |0.868056| 0.902778| 0.875| 0.881944| 0.847222| 0.909722| 
 
